@@ -4,7 +4,7 @@ Add, View, List articles.
 
 [Screenshots](#screenshots)
 
-## Technologies used
+## Built With
 - [Node.js](https://nodejs.org/en/)
 - [Express.js](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
