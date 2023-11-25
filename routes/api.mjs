@@ -1,15 +1,38 @@
 import express from "express";
 import aCollection from "../db/conn.mjs";
+import { ObjectId } from "mongodb";
 import formidable from 'formidable';
 import fs from "fs";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.render('addarticle')
-})
+router.get("/all", async (req, res) => {
+  let result = await aCollection
+    .find({})
+    .sort({'timestamp': -1})
+    .toArray()
+  if (!result) res.send("Not found").status(404);
+  const articles = []
+  for(const item of result) {
+      articles.push({
+          id: item._id,
+          title: item.title,
+          body: item.body.substring(0, Math.min(item.body.length, 50)) + "...",
+      })
+  }
+  res.json(articles)
+});
 
-router.post("/", async (req, res) => {
+router.get('/get/:id', async (req, res, next) => {
+    const id = req.params.id
+    console.log("ID: " + req.params.id);
+    let query = {_id: new ObjectId(req.params.id)};
+    let result = await aCollection.findOne(query);
+    if (!result) res.send("Not found").status(404);
+    res.json({imageSrc: `../image/${id}`, title: result.title, body: result.body})
+});
+
+router.post("/add", async (req, res) => {
     var form = formidable({});
     form.parse(req, async (err, fields, files) => {
         if(!files.image || !fields.title || !fields.body) {
@@ -27,14 +50,14 @@ router.post("/", async (req, res) => {
             return
         }
         let buffer = fs.readFileSync(image.filepath);
-        await aCollection.insertOne({
+        const result = await aCollection.insertOne({
             title: title,
             body: body,
             imageMimeType: image.mimetype,
             timestamp: new Date(),
             image: buffer
         })
-        res.redirect('/');
+        res.json({id: result.insertedId});
         res.end();
     });
 });

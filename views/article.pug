@@ -1,0 +1,16 @@
+head
+  meta(charset='utf-8')
+  title= title
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css')
+  body
+    .modal-dialog
+        .modal-content
+          // Modal Header
+          .modal-header
+            h4#myModalLabel.modal-title= title
+          // Modal Body
+          .modal-body
+            img(src=imageSrc alt='article image' style='width:100%')
+            h5= body
+            a.btn.btn-primary(href='/')
+                | Close

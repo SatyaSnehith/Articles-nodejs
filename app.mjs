@@ -8,8 +8,8 @@ import "./loadEnvironment.mjs"
 import indexRouter from './routes/index.mjs'
 import addRouter from './routes/add.mjs'
 import getarticleRouter from './routes/getarticle.mjs';
-import getallRouter from './routes/getall.mjs';
 import getimageRouter from './routes/getimage.mjs';
+import apiRouter from './routes/api.mjs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,9 +31,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/get', getarticleRouter);
-app.use('/all', getallRouter);
 app.use('/image', getimageRouter);
 app.use('/add', addRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -8,9 +8,7 @@ head
         .modal-content
           // Modal Header
           .modal-header
-            button.close(type="button", data-dismiss="modal")
-            h4#myModalLabel.modal-title
-              | Add article
+            h4#myModalLabel.modal-title Add article
           // Modal Body
           .modal-body
             //#editForm.form(role='form' method='GET' action='https://www.google.com/')
@@ -25,10 +23,7 @@ head
                 label(for='body') Body:
                 textarea#body.form-control(type='text', placeholder='Body', name='body')
               button.btn.btn-primary(type="submit") Submit
-              button.btn.btn-default(type="button", data-dismiss="modal")
+              a.btn.btn-default(type="button", data-dismiss="modal", href='/')
                 | Close
-          // Modal Footer
-          .modal-footer
-            h4 footer
 
     // footer
