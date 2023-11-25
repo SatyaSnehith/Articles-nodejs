@@ -1,0 +1,34 @@
+head
+  meta(charset='utf-8')
+  title Add article
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css')
+
+  body
+    .modal-dialog
+        .modal-content
+          // Modal Header
+          .modal-header
+            button.close(type="button", data-dismiss="modal")
+            h4#myModalLabel.modal-title
+              | Add article
+          // Modal Body
+          .modal-body
+            //#editForm.form(role='form' method='GET' action='https://www.google.com/')
+            form(role='form' method='POST' enctype='multipart/form-data' action='/add')
+              div.form-group
+                label(for='title') Title:
+                input#name.form-control(type='text', placeholder='Title', name='title')
+              div.form-group
+                label(for='image') Image:
+                input#image.form-control-file(type="file", name="image")
+              div.form-group
+                label(for='body') Body:
+                textarea#body.form-control(type='text', placeholder='Body', name='body')
+              button.btn.btn-primary(type="submit") Submit
+              button.btn.btn-default(type="button", data-dismiss="modal")
+                | Close
+          // Modal Footer
+          .modal-footer
+            h4 footer
+
+    // footer
