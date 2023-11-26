@@ -6,7 +6,7 @@ import logger from 'morgan';
 import "./loadEnvironment.mjs"
 
 import indexRouter from './routes/index.mjs'
-import addRouter from './routes/add.mjs'
+import { addRouter } from './routes/add.mjs'
 import getarticleRouter from './routes/getarticle.mjs';
 import getimageRouter from './routes/getimage.mjs';
 import apiRouter from './routes/api.mjs';

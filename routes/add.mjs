@@ -1,42 +1,53 @@
 import express from "express";
 import aCollection from "../db/conn.mjs";
-import formidable from 'formidable';
+import formidable, {errors as formidableErrors}  from 'formidable';
 import fs from "fs";
 
-const router = express.Router();
+const addRouter = express.Router();
 
-router.get("/", (req, res) => {
+addRouter.get("/", (req, res) => {
     res.render('addarticle')
 })
 
-router.post("/", async (req, res) => {
-    var form = formidable({});
-    form.parse(req, async (err, fields, files) => {
-        if(!files.image || !fields.title || !fields.body) {
-            res.json({ error: "Add title, image and body" }).status(400)
-            res.end()
-            return
-        }
-        const image = files.image[0]
-        const title = fields.title[0]
-        const body = fields.body[0]
-        const error = validateFields(title, body, image)
-        if (error) {
-            res.json({ error: error }).status(400)
-            res.end()
-            return
-        }
-        let buffer = fs.readFileSync(image.filepath);
-        await aCollection.insertOne({
-            title: title,
-            body: body,
-            imageMimeType: image.mimetype,
-            timestamp: new Date(),
-            image: buffer
-        })
-        res.redirect('/');
-        res.end();
+addRouter.post("/", async (req, res) => {
+    var form = formidable({
+        maxFields: 3,
+        maxFileSize: _16mb
     });
+    let fields;
+    let files;
+    try {
+        [fields, files] = await form.parse(req);
+    } catch (err) {
+        console.error(err);
+        res.status(err.httpCode || 400).json({ error: err.message });
+        res.end();
+        return
+    }
+    if(!files.image || !fields.title || !fields.body) {
+        res.status(400).json({ error: "Add title, image and body" })
+        res.end()
+        return
+    }
+    const image = files.image[0]
+    const title = fields.title[0]
+    const body = fields.body[0]
+    const error = validateFields(title, body, image)
+    if (error) {
+        res.status(400).json({ error: error })
+        res.end()
+        return
+    }
+    let buffer = fs.readFileSync(image.filepath);
+    await aCollection.insertOne({
+        title: title,
+        body: body,
+        imageMimeType: image.mimetype,
+        timestamp: new Date(),
+        image: buffer
+    })
+    res.redirect('/');
+    res.end();
 });
 
 const _16mb = 16 * 1024 * 1024;
@@ -64,4 +75,4 @@ function validateText(text, type, minCount, maxCount) {
     return null
 }
 
-export default router;
+export { addRouter, _16mb, validateFields, validateText };

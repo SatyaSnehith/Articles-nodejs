@@ -12,6 +12,13 @@ Add, View, List articles.
 - [Bootstrap css](https://getbootstrap.com/docs/3.4/css/)
 - [Formidable](https://www.npmjs.com/package/formidable)
 
+## Apis
+```
+GET  - /api/get/${article-id}         For article
+GET  - /image/${article-id}           For article image
+GET  - /api/all                       For all articles
+POST - /api/add                       To add article
+```
 ## Getting Started
 To get you started you can simply clone the repository:
 
